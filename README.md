@@ -1,6 +1,6 @@
-# Repository Name
+# Linode CLI Action
 
-Repository description
+This GitHub Action allows users to quickly and easily call the Linode CLI from a GitHub Actions workflow.
 
 ## Contribution Guidelines
 

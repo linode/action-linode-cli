@@ -1,0 +1,40 @@
+name: 'Linode CLI'
+description: 'Run a command using the Linode CLI'
+author: 'Lena Garber <lgarber@akamai.com>'
+inputs:
+  token:
+    description: 'The Linode API Personal Access Token to authenticate with.'
+    required: true
+  version:
+    description: 'The Linode CLI version to use.'
+    default: latest
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Python 3
+      uses: actions/setup-python@v4.5.0
+    - name: Determine CLI install extension
+      id: determine_install_version
+      shell: bash
+      run: |
+        if [ "$VERSION" == "latest" ]
+        then
+          echo "::set-output name=extension::"
+        else
+          echo "::set-output name=extension::==${VERSION}"
+        fi
+      env:
+        VERSION: ${{ inputs.version }}
+    - name: Install the Linode CLI
+      run: pip install linode-cli{{ steps.determine_install_version.outputs.extension }}
+      shell: bash
+    - name: Configure the CLI
+      shell: bash
+      run: |
+        cat <<EOF > ~/.config/linode-cli
+        [DEFAULT]
+        token = ${{ inputs.token }}
+        EOF
+    - name: Validate the CLI is installed
+      run: linode-cli --version
+      shell: bash
