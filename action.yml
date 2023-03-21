@@ -1,32 +1,35 @@
 name: 'Linode CLI'
-description: 'Run a command using the Linode CLI'
-author: 'Lena Garber <lgarber@akamai.com>'
+description: 'Install the Linode CLI in a GitHub Actions environment.'
+author: 'Linode <developers@linode.com>'
 inputs:
   token:
     description: 'The Linode API Personal Access Token to authenticate with.'
   version:
-    description: 'The Linode CLI version to use.'
+    description: 'The Linode CLI version to install.'
     default: latest
 runs:
   using: 'composite'
   steps:
     - name: Setup Python 3
       uses: actions/setup-python@v4.5.0
+
     - name: Determine CLI install extension
       id: determine_install_version
       shell: bash
       run: |
         if [ "$VERSION" == "latest" ]
         then
-          echo "::set-output name=extension::"
+          echo "version_extension=" >> $GITHUB_ENV
         else
-          echo "::set-output name=extension::==${VERSION}"
+          echo "version_extension===${VERSION}" >> $GITHUB_ENV
         fi
       env:
         VERSION: ${{ inputs.version }}
+
     - name: Install the Linode CLI
-      run: pip install linode-cli{{ steps.determine_install_version.outputs.extension }}
+      run: pip install linode-cli${{ env.version_extension }}
       shell: bash
+
     - name: Configure the CLI
       if: ${{ inputs.token != '' }}
       shell: bash
@@ -35,6 +38,7 @@ runs:
         [DEFAULT]
         token = ${{ inputs.token }}
         EOF
+
     - name: Validate the CLI is installed
       if: ${{ inputs.token != '' }}
       run: linode-cli --version

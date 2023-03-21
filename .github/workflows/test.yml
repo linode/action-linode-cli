@@ -1,9 +1,9 @@
 on: [push]
 
 jobs:
-  test:
+  test-token:
     runs-on: ubuntu-latest
-    name: Test the action
+    name: Test the action with a setup token
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -11,5 +11,32 @@ jobs:
         uses: ./
         with:
           token: "${{ secrets.LINODE_TOKEN }}"
+      - name: Run an authenticated command
+        run: linode-cli linodes ls > /dev/null
+
+  test-notoken:
+    runs-on: ubuntu-latest
+    name: Test the action without a setup token
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install the Linode CLI
+        uses: ./
+      - name: Run an authenticated command
+        run: linode-cli linodes ls > /dev/null
+        env:
+          LINODE_CLI_TOKEN: "${{ secrets.LINODE_TOKEN }}"
+
+  test-version:
+    runs-on: ubuntu-latest
+    name: Test the action with an explicit version
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install the Linode CLI
+        uses: ./
+        with:
+          token: "${{ secrets.LINODE_TOKEN }}"
+          version: v5.35.0
       - name: Run an authenticated command
         run: linode-cli linodes ls > /dev/null
