@@ -4,7 +4,6 @@ author: 'Lena Garber <lgarber@akamai.com>'
 inputs:
   token:
     description: 'The Linode API Personal Access Token to authenticate with.'
-    required: true
   version:
     description: 'The Linode CLI version to use.'
     default: latest
@@ -29,6 +28,7 @@ runs:
       run: pip install linode-cli{{ steps.determine_install_version.outputs.extension }}
       shell: bash
     - name: Configure the CLI
+      if: ${{ inputs.token != '' }}
       shell: bash
       run: |
         cat <<EOF > ~/.config/linode-cli
@@ -36,5 +36,6 @@ runs:
         token = ${{ inputs.token }}
         EOF
     - name: Validate the CLI is installed
+      if: ${{ inputs.token != '' }}
       run: linode-cli --version
       shell: bash
