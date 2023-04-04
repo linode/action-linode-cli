@@ -17,7 +17,7 @@ This GitHub Action exposes the following arguments:
 
 Before starting, you must create a [Linode Personal Access Token](https://www.linode.com/docs/products/tools/api/guides/manage-api-tokens/) to authenticate the Linode CLI with.
 
-To ensure your Linode Personal Access Token is stored securely, consider storing it as an [Encrypted Secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
+Linode Personal Access Tokens should be stored as [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) to ensure they are secure and sanitized from the workflow output. 
 
 In order to install and authenticate the Linode CLI within a GitHub Action workflow, 
 add the following workflow step:
