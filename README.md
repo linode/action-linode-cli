@@ -24,7 +24,7 @@ add the following workflow step:
 - name: Install the Linode CLI
   uses: linode/action-linode-cli@v1
   with:
-    token: MYPERSONALACCESSTOKEN
+    token: ${{ secrets.LINODE_TOKEN }}
 ```
 
 The Linode CLI should now be available in your GitHub Actions shell environment:
@@ -42,7 +42,7 @@ In order to use a specific version of the Linode CLI, you can use the `version` 
 - name: Install the Linode CLI
   uses: linode/action-linode-cli@v1
   with:
-    token: MYPERSONALACCESSTOKEN
+    token: ${{ secrets.LINODE_TOKEN }}
     version: 5.35.0
 ```
 
@@ -63,7 +63,7 @@ You can then authenticate the Linode CLI at runtime using the `LINODE_CLI_TOKEN`
 - name: List Linodes
   run: linode-cli linodes ls --json
   env:
-    LINODE_CLI_TOKEN: MYPERSONALACCESSTOKEN
+    LINODE_CLI_TOKEN: ${{ secrets.LINODE_TOKEN }}
 ```
 
 
