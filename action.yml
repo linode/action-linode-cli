@@ -1,4 +1,4 @@
-name: 'Linode CLI'
+name: 'Setup Linode CLI'
 description: 'Install the Linode CLI in a GitHub Actions environment.'
 author: 'Linode <developers@linode.com>'
 inputs:
