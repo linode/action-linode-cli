@@ -75,4 +75,6 @@ Want to improve **action-linode-cli**? Please start [here](CONTRIBUTING.md).
 
 ## License
 
-This project is released under the [Apache-2.0 license](./LICENSE).
+This software is provided by Linode, a wholly owned subsidiary of Akamai Technologies Inc. (“Akamai”).  This software may collect or transmit personal or sensitive information provided by or obtained from End Users, subject to the policies and terms of use of Akamai.  This statement describes in detail how Akamai collects, uses, and shares information about individuals who interact with Akamai via its websites, online portals, mobile applications, or directly with Akamai employees and representatives, as well as by using the services of Akamai customers.
+
+The software and documentation in this project are released under the [BSD-3-Clause license](./LICENSE).
