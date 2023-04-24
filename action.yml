@@ -1,6 +1,9 @@
 name: 'Setup Linode CLI'
 description: 'Install the Linode CLI in a GitHub Actions environment.'
-author: 'Linode <developers@linode.com>'
+author: 'Akamai <developers@linode.com>'
+branding:
+  icon: 'server'
+  color: 'orange'
 inputs:
   token:
     description: 'The Linode API Personal Access Token to authenticate with.'
