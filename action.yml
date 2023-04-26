@@ -15,6 +15,8 @@ runs:
   steps:
     - name: Setup Python 3
       uses: actions/setup-python@v4.5.0
+      with:
+        python-version: '3.x'
 
     - name: Determine CLI install extension
       id: determine_install_version
@@ -30,7 +32,7 @@ runs:
         VERSION: ${{ inputs.version }}
 
     - name: Install the Linode CLI
-      run: pip install linode-cli${{ env.version_extension }}
+      run: pip3 install linode-cli${{ env.version_extension }}
       shell: bash
 
     - name: Configure the CLI
