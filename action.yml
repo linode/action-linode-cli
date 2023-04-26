@@ -13,6 +13,10 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Mask the input token
+      shell: bash
+      run: echo "::add-mask::${{ inputs.token }}"
+
     - name: Setup Python 3
       uses: actions/setup-python@v4.5.0
       with:
