@@ -13,8 +13,14 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Mask the input token
+      shell: bash
+      run: echo "::add-mask::${{ inputs.token }}"
+
     - name: Setup Python 3
       uses: actions/setup-python@v4.5.0
+      with:
+        python-version: '3.x'
 
     - name: Determine CLI install extension
       id: determine_install_version
@@ -30,17 +36,13 @@ runs:
         VERSION: ${{ inputs.version }}
 
     - name: Install the Linode CLI
-      run: pip install linode-cli${{ env.version_extension }}
+      run: pip3 install linode-cli${{ env.version_extension }}
       shell: bash
 
-    - name: Configure the CLI
+    - name: Expose the Linode Token to the runner environment
       if: ${{ inputs.token != '' }}
       shell: bash
-      run: |
-        cat <<EOF > ~/.config/linode-cli
-        [DEFAULT]
-        token = ${{ inputs.token }}
-        EOF
+      run: echo "LINODE_CLI_TOKEN=${{ inputs.token }}" >> "$GITHUB_ENV"
 
     - name: Validate the CLI is installed
       if: ${{ inputs.token != '' }}
