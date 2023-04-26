@@ -35,14 +35,10 @@ runs:
       run: pip3 install linode-cli${{ env.version_extension }}
       shell: bash
 
-    - name: Configure the CLI
+    - name: Expose the Linode Token to the runner environment
       if: ${{ inputs.token != '' }}
       shell: bash
-      run: |
-        cat <<EOF > ~/.config/linode-cli
-        [DEFAULT]
-        token = ${{ inputs.token }}
-        EOF
+      run: echo "LINODE_CLI_TOKEN=${{ inputs.token }}" >> "$GITHUB_ENV"
 
     - name: Validate the CLI is installed
       if: ${{ inputs.token != '' }}
