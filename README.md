@@ -4,14 +4,17 @@ This GitHub Action allows users to quickly install and authenticate the Linode C
 
 See the [official Linode CLI repository](https://github.com/linode/linode-cli) for specific usage instructions.
 
+This GitHub Action is designed to run on Ubuntu-based runners and may not function as intended on other platforms.  
+
 ## Arguments
 
 This GitHub Action exposes the following arguments:
 
-| Name      | Required | Default | Description                                                                                                                                |
-|-----------|----------|---------|--------------------------------------------------------------------------------------------------------------------------------------------|
-| `token`   | No       | None    | The [Linode Personal Access Token](https://www.linode.com/docs/products/tools/api/guides/manage-api-tokens/) to authenticate the CLI with. |
-| `version` | No       | latest  | The version of the Linode CLI to install.                                                                                                  |
+| Name           | Required | Default | Description                                                                                                                                                                       |
+|----------------|----------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `token`        | No       | None    | The [Linode Personal Access Token](https://www.linode.com/docs/products/tools/api/guides/manage-api-tokens/) to authenticate the CLI with.                                        |
+| `version`      | No       | latest  | The version of the Linode CLI to install.                                                                                                                                         |
+| `setup-python` | No       | true    | If true, Python will automatically be installed on the runner. If false, users are expected to have a functioning Python installation on their runner before running this action. | 
 
 ## Getting Started
 
