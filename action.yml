@@ -10,6 +10,9 @@ inputs:
   version:
     description: 'The Linode CLI version to install.'
     default: latest
+  setup-python:
+    description: 'If true, Python will automatically be installed on the runner.'
+    default: true
 runs:
   using: 'composite'
   steps:
@@ -19,6 +22,7 @@ runs:
 
     - name: Setup Python 3
       uses: actions/setup-python@v4.5.0
+      if: ${{ inputs.setup-python == 'true' }}
       with:
         python-version: '3.x'
 
