@@ -10,6 +10,9 @@ inputs:
   version:
     description: 'The Linode CLI version to install.'
     default: latest
+  optional-deps:
+    description: 'Whether optional Linode CLI dependencies should be installed.'
+    default: false
   setup-python:
     description: 'If true, Python will automatically be installed on the runner.'
     default: true
@@ -27,17 +30,25 @@ runs:
         python-version: '3.x'
 
     - name: Determine CLI install extension
-      id: determine_install_version
+      id: determine_install_ext
       shell: bash
       run: |
-        if [ "$VERSION" == "latest" ]
+        EXTENSION=""
+
+        if [ "$OPTIONAL_DEPS" == "true" ]
         then
-          echo "version_extension=" >> $GITHUB_ENV
-        else
-          echo "version_extension===${VERSION}" >> $GITHUB_ENV
+          EXTENSION="[obj]"
         fi
+        
+        if [ "$VERSION" != "latest" ]
+        then
+          EXTENSION="${EXTENSION}==${VERSION}"
+        fi
+        
+        echo "version_extension=${EXTENSION}" >> $GITHUB_ENV
       env:
         VERSION: ${{ inputs.version }}
+        OPTIONAL_DEPS: ${{ inputs.optional-deps }}
 
     - name: Install the Linode CLI
       run: pip3 install linode-cli${{ env.version_extension }}
