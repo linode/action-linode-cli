@@ -54,7 +54,7 @@ runs:
         OPTIONAL_DEPS: ${{ inputs.optional-deps }}
 
     - name: Install the Linode CLI
-      run: pip3 install ${{ inputs.upgrade && '' || '--upgrade ' }}linode-cli${{ env.version_extension }}
+      run: pip3 install ${{ inputs.upgrade && '--upgrade ' || '' }}linode-cli${{ env.version_extension }}
       shell: bash
 
     - name: Expose the Linode Token to the runner environment
