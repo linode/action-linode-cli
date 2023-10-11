@@ -32,10 +32,11 @@ runs:
       with:
         python-version: '3.x'
 
-    - name: Determine CLI install extension
-      id: determine_install_ext
+    - name: Determine CLI install arguments
+      id: determine_install_args
       shell: bash
       run: |
+        # Compute extension
         EXTENSION=""
 
         if [ "$OPTIONAL_DEPS" == "true" ]
@@ -49,12 +50,23 @@ runs:
         fi
         
         echo "version_extension=${EXTENSION}" >> $GITHUB_ENV
+        
+        # Compute args
+        ARGS=""
+        
+        if [ "$UPGRADE" == "true" ]
+        then
+          ARGS="${ARGS}--upgrade "
+        fi
+        
+        echo "pip_args=${ARGS}" >> $GITHUB_ENV
       env:
         VERSION: ${{ inputs.version }}
         OPTIONAL_DEPS: ${{ inputs.optional-deps }}
+        UPGRADE: ${{ inputs.upgrade }}
 
     - name: Install the Linode CLI
-      run: pip3 install ${{ inputs.upgrade && '--upgrade ' || '' }}linode-cli${{ env.version_extension }}
+      run: pip3 install ${{ env.pip_args }}linode-cli${{ env.version_extension }}
       shell: bash
 
     - name: Expose the Linode Token to the runner environment
