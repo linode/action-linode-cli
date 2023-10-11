@@ -43,7 +43,7 @@ jobs:
 
   test-optional-deps:
     runs-on: ubuntu-latest
-    name: Test the action with upgrades enabled
+    name: Test the action with optional dependencies
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -51,6 +51,22 @@ jobs:
         uses: ./
         with:
           token: "${{ secrets.LINODE_TOKEN }}"
-          upgrade: true
+          optional-deps: true
+      - name: Assert optional dep installed
+        run: pip freeze | grep -q boto3
+      - name: Run an authenticated command
+        run: linode-cli linodes ls > /dev/null
+
+  test-no-upgrade:
+    runs-on: ubuntu-latest
+    name: Test the action with upgrade disabled
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install the Linode CLI
+        uses: ./
+        with:
+          token: "${{ secrets.LINODE_TOKEN }}"
+          upgrade: false
       - name: Run an authenticated command
         run: linode-cli linodes ls > /dev/null
