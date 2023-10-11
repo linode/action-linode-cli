@@ -16,6 +16,9 @@ inputs:
   setup-python:
     description: 'If true, Python will automatically be installed on the runner.'
     default: true
+  upgrade:
+    description: 'If true, Linode CLI and its dependencies will be automatically upgraded. (--upgrade)'
+    default: false
 runs:
   using: 'composite'
   steps:
@@ -51,7 +54,7 @@ runs:
         OPTIONAL_DEPS: ${{ inputs.optional-deps }}
 
     - name: Install the Linode CLI
-      run: pip3 install linode-cli${{ env.version_extension }}
+      run: pip3 install ${{ inputs.upgrade && '' || '--upgrade ' }}linode-cli${{ env.version_extension }}
       shell: bash
 
     - name: Expose the Linode Token to the runner environment
