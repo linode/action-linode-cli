@@ -18,7 +18,7 @@ inputs:
     default: true
   upgrade:
     description: 'If true, Linode CLI and its dependencies will be automatically upgraded. (--upgrade)'
-    default: false
+    default: true
 runs:
   using: 'composite'
   steps:
