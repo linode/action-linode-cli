@@ -10,11 +10,12 @@ This GitHub Action is designed to run on Ubuntu-based runners and may not functi
 
 This GitHub Action exposes the following arguments:
 
-| Name           | Required | Default | Description                                                                                                                                                                       |
-|----------------|----------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `token`        | No       | None    | The [Linode Personal Access Token](https://www.linode.com/docs/products/tools/api/guides/manage-api-tokens/) to authenticate the CLI with.                                        |
-| `version`      | No       | latest  | The version of the Linode CLI to install.                                                                                                                                         |
-| `setup-python` | No       | true    | If true, Python will automatically be installed on the runner. If false, users are expected to have a functioning Python installation on their runner before running this action. | 
+| Name            | Required | Default | Description                                                                                                                                                                       |
+|-----------------|----------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `token`         | No       | None    | The [Linode Personal Access Token](https://www.linode.com/docs/products/tools/api/guides/manage-api-tokens/) to authenticate the CLI with.                                        |
+| `version`       | No       | latest  | The version of the Linode CLI to install.                                                                                                                                         |
+| `setup-python`  | No       | true    | If true, Python will automatically be installed on the runner. If false, users are expected to have a functioning Python installation on their runner before running this action. | 
+| `upgrade`       | No       | true    | If true, Linode CLI and its dependencies will be automatically upgraded. (--upgrade)                                                                                              |
 
 ## Getting Started
 
