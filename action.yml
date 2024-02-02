@@ -27,7 +27,7 @@ runs:
       run: echo "::add-mask::${{ inputs.token }}"
 
     - name: Setup Python 3
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       if: ${{ inputs.setup-python == 'true' }}
       with:
         python-version: '3.x'
