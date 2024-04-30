@@ -37,7 +37,7 @@ jobs:
         uses: ./
         with:
           token: "${{ secrets.LINODE_TOKEN }}"
-          version: v5.35.0
+          version: v5.48.4
       - name: Run an authenticated command
         run: linode-cli linodes ls > /dev/null
 
