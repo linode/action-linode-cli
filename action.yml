@@ -24,7 +24,9 @@ runs:
   steps:
     - name: Mask the input token
       shell: bash
-      run: echo "::add-mask::${{ inputs.token }}"
+      env:
+        TOKEN: ${{ inputs.token }}
+      run: echo "::add-mask::$TOKEN"
 
     - name: Setup Python 3
       uses: actions/setup-python@v7
@@ -66,13 +68,15 @@ runs:
         UPGRADE: ${{ inputs.upgrade }}
 
     - name: Install the Linode CLI
-      run: pip3 install ${{ env.pip_args }}linode-cli${{ env.version_extension }}
+      run: pip3 install ${pip_args}linode-cli${version_extension}
       shell: bash
 
     - name: Expose the Linode Token to the runner environment
       if: ${{ inputs.token != '' }}
       shell: bash
-      run: echo "LINODE_CLI_TOKEN=${{ inputs.token }}" >> "$GITHUB_ENV"
+      env:
+        TOKEN: ${{ inputs.token }}
+      run: echo "LINODE_CLI_TOKEN=$TOKEN" >> "$GITHUB_ENV"
 
     - name: Validate the CLI is installed
       if: ${{ inputs.token != '' }}
