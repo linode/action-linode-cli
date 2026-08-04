@@ -68,7 +68,7 @@ runs:
         UPGRADE: ${{ inputs.upgrade }}
 
     - name: Install the Linode CLI
-      run: pip3 install ${pip_args}linode-cli${version_extension}
+      run: pip3 install ${pip_args}"linode-cli${version_extension}"
       shell: bash
 
     - name: Expose the Linode Token to the runner environment
