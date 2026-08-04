@@ -6,7 +6,7 @@ branding:
   color: 'orange'
 inputs:
   token:
-    description: 'The Linode API Personal Access Token to authenticate with.'
+    description: 'The Linode API Personal Access Token to authenticate with. Must not contain carriage returns or newlines.'
   version:
     description: 'The Linode CLI version to install.'
     default: latest
@@ -24,10 +24,20 @@ runs:
   steps:
     - name: Mask the input token
       shell: bash
-      run: echo "::add-mask::${{ inputs.token }}"
+      env:
+        TOKEN: ${{ inputs.token }}
+      run: |
+        if [ -z "${TOKEN}" ]; then
+          exit 0
+        fi
+        # Match actions/toolkit escapeData(): %, \r, \n
+        MASK_VALUE="${TOKEN//%/%25}"
+        MASK_VALUE="${MASK_VALUE//$'\r'/%0D}"
+        MASK_VALUE="${MASK_VALUE//$'\n'/%0A}"
+        echo "::add-mask::${MASK_VALUE}"
 
     - name: Setup Python 3
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7
       if: ${{ inputs.setup-python == 'true' }}
       with:
         python-version: '3.x'
@@ -66,13 +76,20 @@ runs:
         UPGRADE: ${{ inputs.upgrade }}
 
     - name: Install the Linode CLI
-      run: pip3 install ${{ env.pip_args }}linode-cli${{ env.version_extension }}
+      run: pip3 install ${pip_args}"linode-cli${version_extension}"
       shell: bash
 
     - name: Expose the Linode Token to the runner environment
       if: ${{ inputs.token != '' }}
       shell: bash
-      run: echo "LINODE_CLI_TOKEN=${{ inputs.token }}" >> "$GITHUB_ENV"
+      env:
+        TOKEN: ${{ inputs.token }}
+      run: |
+        if [[ "${TOKEN}" == *$'\n'* || "${TOKEN}" == *$'\r'* ]]; then
+          echo "::error::token must not contain carriage returns or newlines"
+          exit 1
+        fi
+        echo "LINODE_CLI_TOKEN=${TOKEN}" >> "${GITHUB_ENV}"
 
     - name: Validate the CLI is installed
       if: ${{ inputs.token != '' }}
