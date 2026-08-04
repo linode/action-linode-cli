@@ -6,7 +6,7 @@ branding:
   color: 'orange'
 inputs:
   token:
-    description: 'The Linode API Personal Access Token to authenticate with.'
+    description: 'The Linode API Personal Access Token to authenticate with. Must not contain carriage returns or newlines.'
   version:
     description: 'The Linode CLI version to install.'
     default: latest
@@ -26,7 +26,15 @@ runs:
       shell: bash
       env:
         TOKEN: ${{ inputs.token }}
-      run: echo "::add-mask::$TOKEN"
+      run: |
+        if [ -z "${TOKEN}" ]; then
+          exit 0
+        fi
+        # Match actions/toolkit escapeData(): %, \r, \n
+        MASK_VALUE="${TOKEN//%/%25}"
+        MASK_VALUE="${MASK_VALUE//$'\r'/%0D}"
+        MASK_VALUE="${MASK_VALUE//$'\n'/%0A}"
+        echo "::add-mask::${MASK_VALUE}"
 
     - name: Setup Python 3
       uses: actions/setup-python@v7
@@ -76,7 +84,12 @@ runs:
       shell: bash
       env:
         TOKEN: ${{ inputs.token }}
-      run: echo "LINODE_CLI_TOKEN=$TOKEN" >> "$GITHUB_ENV"
+      run: |
+        if [[ "${TOKEN}" == *$'\n'* || "${TOKEN}" == *$'\r'* ]]; then
+          echo "::error::token must not contain carriage returns or newlines"
+          exit 1
+        fi
+        echo "LINODE_CLI_TOKEN=${TOKEN}" >> "${GITHUB_ENV}"
 
     - name: Validate the CLI is installed
       if: ${{ inputs.token != '' }}
